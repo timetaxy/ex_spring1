@@ -29,5 +29,41 @@ tasks.named('test') {
 }
 
 war {
+	def activeProfile = 'prod'
+
+	if(project.hasProperty 'profile'){
+		activeProfile = profile
+	}
+
+	processResources {
+		exclude('application.yml', 'applicatioin-*.yml')
+	}
+
+	into('WEB-INF/classes'){
+		from "src/main/resources/applicatioin-${activeProfile}.yml"
+	}
+
+	rename "application-${activeProfile}.yml", 'application.yml'
+
+	archiveFileName = "${rootProject.name}.plain.war"
+}
+
+bootWar {
+	def activeProfile = 'prod'
+
+	if(project.hasProperty 'profile'){
+		activeProfile=profile
+	}
+
+	processResources {
+		exclude('application.yml', 'applicatioin-*.yml')
+	}
+
+	into('WEB-INF/classes'){
+		from "src/main/resources/applicatioin-${activeProfile}.yml"
+	}
+
+	rename "application-${activeProfile}.yml", 'application.yml'
+
 	archiveFileName = "${rootProject.name}.war"
 }
